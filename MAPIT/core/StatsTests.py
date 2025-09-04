@@ -906,22 +906,16 @@ def PageTrendTest(inQty,MBP,MBPs,K=0.5,GUIObject=None,doTQDM=True):
   if doTQDM:
     pbar = tqdm(total=totalloops)
 
-
-      
-
-
   for k in range(PageCalcs.shape[0]):
+    prev_test_statistic = 0.0
     for P in range(1,int(MBPs)):
-      
-      if P == 1:
-        RZN = inQty[k,int((P - 1) * MBP)]
-      else:
-        RZN = inQty[k,int((P - 2) * MBP)] + inQty[k,int((P - 1) * MBP)] - K
+      y = inQty[k, P * int(MBP) - 1]  # get the last value in the 'block'
+      RZN = prev_test_statistic + y - K
       
       if RZN < 0:
         RZN = 0
       
-      PageCalcs[k,int((P - 1) * MBP):int(P * MBP)] = np.ones((MBP,)) * RZN
+      PageCalcs[k,int((P-1) * MBP):int(P * MBP)] = np.ones((MBP,)) * RZN
 
       if GUIObject is not None:
         GUIObject.progress.emit(loopcounter / totalloops*100)
@@ -929,7 +923,4 @@ def PageTrendTest(inQty,MBP,MBPs,K=0.5,GUIObject=None,doTQDM=True):
       if doTQDM:
         pbar.update(1)
 
-
-
   return PageCalcs
-  
