@@ -891,7 +891,7 @@ class MBArea(object):
 
         return covmatrix
 
-    def calcPageTT(self):
+    def calcPageTT(self, K=0.5):
 
         """
         
@@ -910,7 +910,7 @@ class MBArea(object):
                 self.calcSITMUF()
 
         MBPs = AuxFunctions.getMBPs(self.processedInputTimes,self.processedInventoryTimes,self.processedOutputTimes,self.mbaTime)
-        self.Page = Tests.PageTrendTest(self.SITMUF,self.mbaTime,MBPs,doTQDM=False, GUIObject=self.GUIObject)
+        self.Page = Tests.PageTrendTest(self.SITMUF,self.mbaTime,MBPs,K=K,doTQDM=False, GUIObject=self.GUIObject)
         return self.Page
     
     def _parIterSlicer(self, I1, I2, attr):
